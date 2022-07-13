@@ -1,4 +1,4 @@
-package com.delisting.demo.domain.users;
+package com.delisting.demo.domain.user;
 
 import com.delisting.demo.domain.BaseTimeEntity;
 import lombok.Builder;
@@ -10,20 +10,21 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @Entity
-public class Users extends BaseTimeEntity {
+public class User extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 30, nullable = false)
-    private String user_id;
+    @Column(length = 30, nullable = false, name = "user_id")
+    private String userId;
 
     @Column(length = 30, nullable = false)
-    private String password;
+    private String password="0000";
 
+    @Enumerated(EnumType.STRING)
     @Column(length = 30, nullable = false)
-    private String provider;
+    private Provider provider;
 
     @Column(length = 30, nullable = false)
     private String nickname;
@@ -35,15 +36,20 @@ public class Users extends BaseTimeEntity {
     private boolean is_admin = false;
 
     @Builder
-    public Users(String user_id, String password, String provider, String nickname) {
-        this.user_id = user_id;
+    public User(String userId, String password, Provider provider, String nickname) {
+        this.userId = userId;
         this.password = password;
         this.provider = provider;
         this.nickname = nickname;
     }
 
-    public void update(String user_id, String password, String nickname) {
-        this.user_id = user_id;
+    public User update(String nickname) {
         this.nickname = nickname;
+
+        return this;
+    }
+
+    public String getProviderKey() {
+        return this.provider.getProvider();
     }
 }
